@@ -127,6 +127,29 @@ Screw.Unit(function() {
       });
     });
 
+
+    describe("#throw_exception", function() {
+
+      method_that_throws = function(){throw("!");};
+      empty_function = function(){};
+
+      it("expects an exception to be thrown", function() {
+         expect(method_that_throws).to(throw_exception);
+      });
+
+      describe(".failure_message", function() {
+         it ("prints 'expected [actual] to (not) throw an exception", function() {
+
+          try { expect(empty_function).to(throw_exception); } catch(e) { message = e }
+          expect(message).to(match, 'supposed to throw an exception');
+
+          try { expect(method_that_throws).to_not(throw_exception); } catch(e) { message = e }
+          expect(message).to(match, 'not supposed to throw an exception');
+         });
+
+      });
+    });
+
     describe('#be_undefined', function() {
       it("matches undefined", function() {
         expect(undefined).to(be_undefined);
@@ -174,6 +197,7 @@ Screw.Unit(function() {
         expect(true).to_not(be_false);
         expect(1).to_not(be_false);
       });
+
 
       describe(".failure_message", function() {
         it("prints 'expected [actual] to (not) be false", function() {
