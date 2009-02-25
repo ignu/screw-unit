@@ -30,16 +30,25 @@ Screw.Unit(function() {
 
         describe("When mocking an object with parameters", function() {
             var internet_explorer = {};
+            var request= {url : "http://aol.com", date : "today" };
             Screw.Mock(internet_explorer, "suck");
 
-            internet_explorer.suck(4,"hard");
+            internet_explorer.suck(4,"hard", request);
 
-            it("can verify correct parameters were passed in", function() {
-                expect(internet_explorer.suck).to(have_been_called_with, [any,"hard"]);
+            it("ignores the any parameter and verifies other", function() {
+              expect(internet_explorer.suck).to(have_been_called_with, [any,"hard"]);
 
-                expect(function() {
-                    expect(internet_explorer.suck).to(have_been_called_with, [3]);
-                }).to(throw_exception);
+              expect(function() {
+                  expect(internet_explorer.suck).to(have_been_called_with, [3]);
+              }).to(throw_exception);
+            });
+
+            it("verifies only supplied properties of objects", function() {
+                  expect(internet_explorer.suck)
+                          .to(have_been_called_with, [any, any, {url:"http://aol.com"}]);
+
+                  expect(internet_explorer.suck)
+                          .to_not(have_been_called_with, [any, any, {arl:"http://aol.com"}]);                
             });
         });
 
