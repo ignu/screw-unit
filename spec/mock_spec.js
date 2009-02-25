@@ -18,6 +18,14 @@ Screw.Unit(function() {
                     expect(person.fly).to_not(have_been_called);
                 }).to(throw_exception);
             });
+
+            it("mocked functions return false and can be unmocked", function() {
+                var ryu = { throw_fireball : function() { return "hadouken";}};
+                Screw.Mock(ryu, "throw_fireball");
+                expect(ryu.throw_fireball()).to(be_false);
+                ryu.unmock();
+                expect(ryu.throw_fireball()).to(equal, "hadouken");
+            });            
         });
 
 //        describe("When mocking an object with parameters", function() {
