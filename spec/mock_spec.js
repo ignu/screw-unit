@@ -28,14 +28,22 @@ Screw.Unit(function() {
             });            
         });
 
-//        describe("When mocking an object with parameters", function() {
-//            var internet_explorer = {};
-//            //Screw.Mock(internet_explorer, "suck").expecting([,"hard"]);
-//
-//            it("can verify correct parameters were passed in", function() {
-//
-//            });
-//        });
+        describe("When mocking an object with parameters", function() {
+            var internet_explorer = {};
+            Screw.Mock(internet_explorer, "suck");
+
+            internet_explorer.suck(4,"hard");
+
+            it("can verify correct parameters were passed in", function() {
+                expect(internet_explorer.suck)
+                        .to(have_been_called_with, [any,"hard"]);
+
+                expect(function() {
+                    expect(internet_explorer.suck)
+                        .to(have_been_called_with, [3]);
+                }).to(throw_exception);
+            });
+        });
 
      
     });
