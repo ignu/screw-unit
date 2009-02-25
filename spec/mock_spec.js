@@ -44,13 +44,11 @@ Screw.Unit(function() {
         });
 
         describe("When passed a callback", function() {
-            var internet_explorer = {};
-            Screw.Mock(internet_explorer, "suck");
-            Screw.Mock(internet_explorer, "run", function() { internet_explorer.suck();});
-            internet_explorer.run();
+            var internet_explorer = {suck: function() {return "suck";}};
+            Screw.Mock(internet_explorer, "run", internet_explorer.suck);
 
-            it("it executes the callback", function() {
-                expect(internet_explorer.suck).to(have_been_called);
+            it("it returns the callback result", function() {
+                expect(internet_explorer.run()).to(equal, "suck");
             });
         });
 
