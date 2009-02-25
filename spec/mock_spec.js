@@ -35,13 +35,22 @@ Screw.Unit(function() {
             internet_explorer.suck(4,"hard");
 
             it("can verify correct parameters were passed in", function() {
-                expect(internet_explorer.suck)
-                        .to(have_been_called_with, [any,"hard"]);
+                expect(internet_explorer.suck).to(have_been_called_with, [any,"hard"]);
 
                 expect(function() {
-                    expect(internet_explorer.suck)
-                        .to(have_been_called_with, [3]);
+                    expect(internet_explorer.suck).to(have_been_called_with, [3]);
                 }).to(throw_exception);
+            });
+        });
+
+        describe("When passed a callback", function() {
+            var internet_explorer = {};
+            Screw.Mock(internet_explorer, "suck");
+            Screw.Mock(internet_explorer, "run", function() { internet_explorer.suck();});
+            internet_explorer.run();
+
+            it("it executes the callback", function() {
+                expect(internet_explorer.suck).to(have_been_called);
             });
         });
 
