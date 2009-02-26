@@ -65,6 +65,23 @@ Screw.Unit(function() {
             });
         });
 
+        describe("When expecting multiple calls", function() {
+            var mock = {};
+            Screw.Mock(mock, "blah");
+            mock.blah(1);
+            mock.blah(2);
+
+            it("verifies the number of calls", function() {
+                expect(mock.blah).to(have_been_called_exactly, 2);
+            });
+
+            it("can verify the parameters ", function() {
+                expect(mock.blah).to(have_been_called_with, [1]);
+                expect(mock.blah).to(have_been_called_with, [2]);
+                expect(mock.blah).to_not(have_been_called_with, [3]);
+            });
+        });
+
 
     });
 });
