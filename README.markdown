@@ -49,9 +49,9 @@ Click on a `describe` or `it` to run just those tests.
 
 A global `before` is a `before` block run before all tests in a test suite, regardless of their nesting. This is often useful to reset global variables, or blank-out DOM nodes before each test is run. Put this at the top of the your suite file or in your spec helper.
 
-    Screw.Unit(function() {
+    Screw.Unit(function(c) { with(c) {
       before(function() { ... });
-    });
+    }});
     
 Note that you can have any number of `Screw.Unit(...)` blocks in one file. Thus, you can have multiple global `befores` and `afters`.
 
@@ -101,10 +101,10 @@ A great test maximizes these features:
 
 * it provides **documentation**, explaining the intended functioning of the system as well as how the source code works;
 * it supports **ongoing development**, as you bit-by-bit write a failing test and make it pass;
-* it supports **refactoring** and **prevents regression**;
+* it supports later **refactoring** and **prevents regression** as you add other features;
 * and it **requires little modification** as the implementation of the system changes, especially changes to unrelated code.
 
-This section focuses principally on tests as documentation. **To provide documentation, as well as support future modification, a test should be readable and well organized.** Here are some recommendations on how to do it.
+This section focuses principally on tests as documentation. **To provide documentation, as well as support future modification, a test should be readable and well organized.** Here are some recommendations on how to do just that.
 
 ## Use Nested Describes to Express Context
 
@@ -288,11 +288,11 @@ Screw.Unit is designed from the ground-up to be extensible. For example, to add 
 
 There are also events for the `loading` and `loaded` test code code, as well as just `before` and just `after` all tests are run:
 
-  $(Screw)
-    .bind('loading', function() {...})
-    .bind('loaded', function() {...})
-    .bind('before', function() {...})
-    .bind('after', function() {...})
+    $(Screw)
+      .bind('loading', function() {...})
+      .bind('loaded', function() {...})
+      .bind('before', function() {...})
+      .bind('after', function() {...})
 
 # Download
 

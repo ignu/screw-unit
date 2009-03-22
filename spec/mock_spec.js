@@ -1,10 +1,13 @@
-Screw.Unit(function() {
+Screw.Unit(function(c) { with(c) {
     describe("Screw.Mock", function() {
+        var person = {die : function(){ return "oh no";}};
 
         describe("When mocking an object", function() {
-            var person = {};
-            Screw.Mock(person, "die");
-            Screw.Mock(person, "fly");
+
+            before(function() {
+                Screw.Mock(person, "die");
+                Screw.Mock(person, "fly");
+            });
 
             it("can verify a function was called", function() {
                 person.die();
@@ -31,11 +34,14 @@ Screw.Unit(function() {
         });
 
         describe("When mocking an object with parameters", function() {
-            var internet_explorer = {};
-            var request = {url : "http://aol.com", date : "today" };
-            Screw.Mock(internet_explorer, "suck");
 
-            internet_explorer.suck(4, "hard", request);
+            var internet_explorer = {};
+
+            before(function(){
+                var request = {url : "http://aol.com", date : "today" };
+                Screw.Mock(internet_explorer, "suck");
+                internet_explorer.suck(4, "hard", request);
+            });
 
             it("ignores the any parameter and verifies other", function() {
                 expect(internet_explorer.suck).to(have_been_called_with, [any,"hard"]);
@@ -55,10 +61,14 @@ Screw.Unit(function() {
         });
 
         describe("When passed a callback", function() {
+
             var internet_explorer = {suck: function() {
                 return "suck";
             }};
-            Screw.Mock(internet_explorer, "run", internet_explorer.suck);
+
+            before(function() {
+                Screw.Mock(internet_explorer, "run", internet_explorer.suck);
+            });
 
             it("it returns the callback result", function() {
                 expect(internet_explorer.run()).to(equal, "suck");
@@ -67,9 +77,11 @@ Screw.Unit(function() {
 
         describe("When expecting multiple calls", function() {
             var mock = {};
-            Screw.Mock(mock, "blah");
-            mock.blah(1);
-            mock.blah(2);
+            before(function() {
+                Screw.Mock(mock, "blah");
+                mock.blah(1);
+                mock.blah(2);
+            });
 
             it("verifies the number of calls", function() {
                 expect(mock.blah).to(have_been_called_exactly, 2);
@@ -82,6 +94,12 @@ Screw.Unit(function() {
             });
         });
 
+    describe("After a describe",function() {
+
+        it("automatically unmocks all mocks", function() {
+            expect(person.die()).to(equal, "oh no");            
+        });
+    });
 
     });
-});
+}});

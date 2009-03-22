@@ -1,4 +1,12 @@
 *.iml
 *.ipr
 *.iws
-.idea*
+*.user
+.idea
+*.suo
+bin
+Bin
+obj
+Obj
+ReSharp*
+_ReSharp*
